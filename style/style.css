@@ -1,0 +1,181 @@
+/*
+    GENERAL STYLE
+*/
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+}
+
+body {
+    background-color: beige;
+}
+
+/*
+    PRE-SCREENS STYLE
+*/
+
+.modal-box {
+    display: none;
+}
+
+/*
+    BOARD STYLE
+*/
+
+.board {
+    background-color: bisque;
+    max-width: 1024px;
+    height: 500px;
+    margin: 100px auto 0;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    background-color: pink;
+    height: 80%;
+    display: flex;
+
+
+    .human-bed {
+        background-color: palevioletred;
+        width: 20%;
+    }
+
+    .battle-ground {
+        background-color: orange;
+        width: 800px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        &.ready li {
+            cursor: pointer;
+        }
+
+        & ul {
+            background-color: red;
+            height: 20%;
+            display: flex;
+            position: relative;
+
+
+
+            & li {
+                background-color: #e8e8e8;
+                height: 100px;
+                width: 100px;
+                position: relative;
+                overflow: visible;
+
+                &:nth-child(even) {
+                    background-color: lightgray;
+                }
+            }
+        }
+    }
+
+    .monster-closet {
+        background-color: orangered;
+        width: calc(100% - 800px - 19%);
+    }
+
+}
+
+footer {
+    background-color: lightblue;
+    height: 20%;
+    display: flex;
+    justify-content: space-between;
+
+    .budget {
+        background-color: aquamarine;
+        width: 20%;
+
+        .start-game-btn {
+            /* !THIS BUTTON IS TEMPORARY */
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    }
+
+    .cat-center {
+        background-color: lightblue;
+        width: 60%;
+        display: flex;
+        padding: 0 30px;
+
+        .cat-list {
+            display: flex;
+            align-items: center;
+
+            .availableCat {
+                background-color: #fff;
+                width: 80px;
+                height: 80px;
+                background-size: 4000%;
+                background-position: -10px 93px;
+                cursor: pointer;
+
+                &:hover {
+                    border: 2px solid greenyellow;
+                }
+
+                &.chosen {
+                    border: 2px solid red;
+                }
+            }
+        }
+    }
+
+    .settings {
+        background-color: aqua;
+        width: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .settings-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    }
+}
+
+/*
+    CHARACTERS STYLE
+*/
+
+.cat {
+    width: 100%;
+    height: 100%;
+    background-size: 4000%;
+    background-position: -13px 113px;
+}
+
+.bullet {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: red;
+    left: 70px;
+    top: 20%;
+    z-index: 1;
+}
+
+.monster {
+    width: 100%;
+    height: 100%;
+    background-color: transparent !important;
+    right: -100px;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    background-size: 2500%;
+    background-position: 819px 197px;
+}
