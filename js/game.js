@@ -3,6 +3,7 @@ import cats from "./data-cats.js";
 import Monster from "./monster.js";
 import monsters from "./data-monsters.js";
 import levels from "./data-levels.js";
+import Crunchies from "./food.js";
 
 class Game {
   // code to be added
@@ -24,15 +25,17 @@ class Game {
     this.gameIsOver = false;
     this.levelCompleted = false;
     this.gameCompleted = false;
+    this.foodCrunchies = [];
+    this.food = 5;
 
     this.start(currentLevel);
   }
 
   start(lvl) {
-    // this.gameLoop();
     this.startBattle(lvl);
     this.availableCats(lvl);
     this.selectPlacement();
+    // this.startFeeder();
   }
 
   availableCats(lvl) {
@@ -56,13 +59,10 @@ class Game {
             this.tempCat = cat;
             this.boardReady = true;
             this.battleGround.classList.add("ready");
-
-            // alert("chose position");
           }
         });
 
         this.catSelection.append(li);
-        // alert("choose a cat");
       }
     }
   }
@@ -95,6 +95,19 @@ class Game {
         }
       });
     }
+  }
+
+  startFeeder() {
+    let foodInt = setInterval(() => {
+      this.foodCrunchies.push(new Crunchies());
+      for (const crunchie of this.foodCrunchies) {
+        crunchie.addEventListener("click", () => {
+          Game.food += 5;
+          crunchie.element.style.display = "none";
+          crunchie.element.remove();
+        });
+      }
+    }, 5000);
   }
 
   startBattle(lvl) {
@@ -172,7 +185,7 @@ class Game {
               catOnboard.health -= monster.strength;
               console.log("catOnboard.health", catOnboard.health);
               if (catOnboard.health <= 0) {
-                catOnboard.projectiles = null;
+                // catOnboard.projectiles = null;
                 catOnboard.element.remove();
                 monster.velocity = monster.speed;
               }

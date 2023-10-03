@@ -3,7 +3,7 @@ const monster = {
     level: 1,
     name: "ghoul",
     health: 10,
-    strength: 0.1,
+    strength: 1,
     speed: 3,
     type: "walker",
     img: "url('./img/Attack.png')",
