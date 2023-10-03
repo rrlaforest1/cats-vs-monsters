@@ -2,6 +2,7 @@ import Cat from "./cat.js";
 import cats from "./data-cats.js";
 import Monster from "./monster.js";
 import monsters from "./data-monsters.js";
+import levels from "./data-levels.js";
 
 class Game {
   // code to be added
@@ -12,33 +13,33 @@ class Game {
     this.battleGroundSpaces = document.querySelectorAll(
       ".battle-ground-spaces li"
     );
-    this.catData = cats;
+    this.catsData = cats;
+    this.levelsData = levels;
+    this.monstersData = monsters;
     this.boardReady = false;
-    this.catsOnBoard = {};
+    this.catsOnBoard = [];
     this.tempCat = null;
     this.monsters = [];
+    this.monsterCounter = 0;
+    this.gameIsOver = false;
+    this.levelCompleted = false;
+    this.gameCompleted = false;
 
     this.start(currentLevel);
   }
 
   start(lvl) {
     // this.gameLoop();
-    this.monsterswaves(lvl);
+    this.startBattle(lvl);
     this.availableCats(lvl);
     this.selectPlacement();
   }
 
   availableCats(lvl) {
-    console.log("availableCats", this.catData);
-    for (const cat of this.catData) {
+    for (const cat of this.catsData) {
       if (cat.level === this.currentLevel) {
         const li = document.createElement("li");
         li.classList.add("availableCat");
-        li.setAttribute("data-level", cat.level);
-        li.setAttribute("data-name", cat.name);
-        li.setAttribute("data-health", cat.health);
-        li.setAttribute("data-strength", cat.strength);
-        li.setAttribute("data-type", cat.type);
         li.style.backgroundImage = cat.img;
 
         li.addEventListener("click", (e) => {
@@ -69,25 +70,22 @@ class Game {
   selectPlacement() {
     for (const space of this.battleGroundSpaces) {
       space.addEventListener("click", (e) => {
-        console.log("click on space", e.target);
-        console.log("this.tempCat", this.tempCat);
-
         if (
           this.boardReady === true &&
           !e.target.classList.contains("occupied")
         ) {
           const position = e.target.id;
 
-          console.log("position", position);
-
-          const createCat = new Cat(
-            position,
-            this.tempCat.level,
-            this.tempCat.name,
-            this.tempCat.health,
-            this.tempCat.strength,
-            this.tempCat.type,
-            this.tempCat.img
+          this.catsOnBoard.push(
+            new Cat(
+              position,
+              this.tempCat.level,
+              this.tempCat.name,
+              this.tempCat.health,
+              this.tempCat.strength,
+              this.tempCat.type,
+              this.tempCat.img
+            )
           );
 
           document.querySelector(".chosen").classList.remove("chosen");
@@ -99,84 +97,97 @@ class Game {
     }
   }
 
-  monsterswaves(lvl) {
-    console.log("monsterswaves", monsters);
+  startBattle(lvl) {
+    /**
+     * BATTLE SYSTEM
+     */
+    const currentLevelData = this.levelsData[lvl];
+    const numberOfMonstersForLvl = currentLevelData.quantity;
+
     let monstersFrequency = setInterval(() => {
-      this.monsters.push(
-        new Monster(
-          monsters[0].level,
-          monsters[0].name,
-          monsters[0].health,
-          monsters[0].strenth,
-          monsters[0].type,
-          monsters[0].img
-        )
-      );
-    }, 1000 * 15);
+      for (const monsterType of currentLevelData.monsters) {
+        this.monsterCounter++;
+
+        if (this.monsterCounter <= numberOfMonstersForLvl) {
+          this.monsters.push(
+            new Monster(
+              monsters[monsterType.type].level,
+              monsters[monsterType.type].name,
+              monsters[monsterType.type].health,
+              monsters[monsterType.type].strength,
+              monsters[monsterType.type].speed,
+              monsters[monsterType.type].type,
+              monsters[monsterType.type].img
+            )
+          );
+        } else {
+          clearInterval(monstersFrequency);
+        }
+      }
+    }, 5000);
 
     let monsterMovement = setInterval(() => {
       for (const monster of this.monsters) {
         monster.move();
         monster.updatePosition();
+
+        for (const catOnboard of this.catsOnBoard) {
+          for (const bullet of catOnboard.projectiles) {
+            /**
+             * Check if bullets hit the monsters
+             */
+            if (monster.didCollide(bullet) && monster.health > 0) {
+              console.log("It's a HIT!");
+              bullet.element.remove();
+              monster.health -= catOnboard.strength;
+              /**
+               * If no more monsters congrats! you've completed the level
+               */
+              if (monster.health <= 0) {
+                monster.element.remove();
+                if (this.monsters.length <= 0) {
+                  this.levelCompleted = true;
+                  /**
+                   * If no more levels YOU'VE WON else Start new level
+                   */
+                  if (!this.levelsData[lvl + 1]) {
+                    this.gameCompleted = true;
+                    winAnnouncement();
+                  } else {
+                    startNewLevel(lvl + 1);
+                  }
+                }
+              }
+            }
+            /**
+             * Check if Monsters reaches cats
+             */
+            if (monster.didCollide(catOnboard) && monster.health > 0) {
+              console.log("oh no too late!!");
+
+              // stop monster's movement
+              monster.velocity = 0;
+
+              console.log("it's hitting the kitty!! T.T");
+              catOnboard.health -= monster.strength;
+              console.log("catOnboard.health", catOnboard.health);
+              if (catOnboard.health <= 0) {
+                catOnboard.projectiles = null;
+                catOnboard.element.remove();
+                monster.velocity = monster.speed;
+              }
+
+              // continue monster's movement
+            }
+          }
+        }
       }
     }, 100);
   }
 
-  //   gameLoop() {
-  //     if (this.gameIsOver) {
-  //       return;
-  //     }
-
-  //     this.animationId = requestAnimationFrame(() => this.gameLoop());
-  //     this.update();
-  //   }
-
-  //   update() {
-  //     /**
-  //      * Game Engine
-  //      */
-  //     if (this.counter % 300 === 0) {
-  //       this.obstacles.push(new Obstacle(this.gameScreen));
-  //       this.counter = 0;
-  //     }
-  //     this.counter++;
-
-  //     for (const obstacle of this.obstacles) {
-  //       obstacle.move();
-  //       obstacle.updatePosition();
-  //       if (this.player.didCollide(obstacle) && this.canBeHit) {
-  //         this.lives--;
-
-  //         this.liveTag.textContent = this.lives;
-  //         this.canBeHit = false;
-  //         setTimeout(() => {
-  //           this.canBeHit = true;
-  //         }, 3000);
-  //       }
-  //     }
-
-  //     const obstaclesToRemove = this.obstacles.filter(
-  //       (obstacle) => obstacle.top > this.height
-  //     );
-  //     obstaclesToRemove.forEach((obstacle) => obstacle.element.remove());
-  //     this.obstacles = this.obstacles.filter(
-  //       (obstacle) => obstacle.top <= this.height
-  //     );
-
-  //     if (this.lives <= 0) {
-  //       this.gameIsOver = true;
-  //       cancelAnimationFrame(this.animationId);
-  //       const animations = this.gameScreen.getAnimations();
-  //       animations[0].pause();
-  //     }
-
-  //     for (const key in this.pressedKeys) {
-  //       if (this.pressedKeys[key]) {
-  //         this.player.move(key);
-  //       }
-  //     }
-  //     this.player.updatePosition();
-  //   }
+  startNewLevel(lvl) {}
+  winAnnouncement() {}
+  gameOver() {}
 }
 
 export default Game;

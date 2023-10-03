@@ -1,12 +1,13 @@
-const monster = [
-  {
+const monster = {
+  walker: {
     level: 1,
     name: "ghoul",
     health: 10,
-    strength: 2,
-    type: "direct",
+    strength: 0.1,
+    speed: 3,
+    type: "walker",
     img: "url('./img/Attack.png')",
   },
-];
+};
 
 export default monster;

@@ -2,12 +2,12 @@ import cats from "./data-cats.js";
 import Projectile from "./projectile.js";
 
 class Cat {
-  constructor(position, level, name, health, strenth, type, img) {
+  constructor(position, level, name, health, strength, type, img) {
     this.position = document.getElementById(position);
     this.level = level;
     this.name = name;
     this.health = health;
-    this.strenth = strenth;
+    this.strength = strength;
     this.type = type;
     this.img = img;
     this.projectiles = [];

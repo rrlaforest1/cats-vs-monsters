@@ -3,7 +3,7 @@ const cats = [
     level: 1,
     name: "fullball",
     health: 10,
-    strength: 1,
+    strength: 1.5,
     type: "projectiles",
     img: "url('./img/blue_3.png')",
   },
