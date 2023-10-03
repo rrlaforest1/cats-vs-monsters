@@ -53,7 +53,8 @@ main {
         width: 800px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-evenly;
+        overflow: hidden;
 
         &.ready li {
             cursor: pointer;
@@ -64,6 +65,7 @@ main {
             height: 20%;
             display: flex;
             position: relative;
+
 
 
 
