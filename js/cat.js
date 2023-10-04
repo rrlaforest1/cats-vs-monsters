@@ -28,12 +28,18 @@ class Cat {
 
     let bulletCadence = setInterval(() => {
       this.projectiles.push(new Projectile(pos));
+      if (this.health <= 0) {
+        clearInterval(bulletCadence);
+      }
     }, 3000);
 
     let bulletMovement = setInterval(() => {
       for (const bullet of this.projectiles) {
         bullet.move();
         bullet.updatePosition();
+        if (this.health <= 0) {
+          clearInterval(bulletMovement);
+        }
       }
     }, 30);
   }

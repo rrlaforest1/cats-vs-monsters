@@ -2,10 +2,40 @@
     GENERAL STYLE
 */
 
+@font-face {
+    font-family: 'Wellfleet';
+    src: url('./../fonts/Wellfleet-Regular.ttf') format('truetype');
+}
+
+@keyframes blink-text {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes img-sprite {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: 200%;
+    }
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: "Wellfleet", sans-serif;
 }
 
 li {
@@ -13,7 +43,11 @@ li {
 }
 
 body {
-    background-color: beige;
+    /* background-color: beige; */
+}
+
+.hidden {
+    display: none !important;
 }
 
 /*
@@ -21,7 +55,82 @@ body {
 */
 
 .modal-box {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .instructions {
+        padding: 30px;
+        background-color: white;
+        color: black;
+        max-width: 600px;
+        position: relative;
+
+        & h3 {
+            font-size: 14px;
+        }
+
+        & p {
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .initiate-game-btn {
+            border: 3px solid black;
+            background-color: white;
+            color: black;
+            padding: 15px 40px;
+            cursor: pointer;
+        }
+    }
+
+}
+
+.border-left {
+    width: 10px;
+    height: calc(100% + 20px);
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    background: url(./../img/borders.png) repeat-y top;
+
+}
+
+.border-right {
+    width: 10px;
+    height: calc(100% + 20px);
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    background: url(./../img/borders.png) repeat-y top;
+
+}
+
+.border-top {
+    width: calc(100% + 20px);
+    height: 10px;
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    background: url(./../img/bordershor.png) repeat-x top;
+
+}
+
+.border-bottom {
+    width: calc(100% + 20px);
+    height: 10px;
+    position: absolute;
+    left: -10px;
+    bottom: -10px;
+    background: url(./../img/bordershor.png) repeat-x top;
+
 }
 
 /*
@@ -29,12 +138,15 @@ body {
 */
 
 .board {
-    background-color: bisque;
+    /* background-color: bisque; */
+    /* border: 1px solid gray; */
     max-width: 1024px;
     height: 500px;
     margin: 100px auto 0;
     display: flex;
     flex-direction: column;
+    position: relative;
+
 
     .feeder {
         display: none;
@@ -47,36 +159,91 @@ body {
             }
 
             .feeder {
-                .crunchie {
-                    top: -100px;
-                    height: 10px;
-                    width: 10px;
-                    border: 2px solid black;
-                    background-color: brown;
+                display: block;
+                width: 100px;
+                height: 100px;
+                background: url(./../img/feeder.png) no-repeat 0 0%;
+                background-position-y: bottom;
+                background-size: 200%;
+                animation: img-sprite 1s steps(2) infinite;
+
+                .foodcounter {
+                    position: relative;
+                    right: -120px;
+                    top: 25px;
+                    width: 50px;
+                    height: 50px;
+                    padding: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 5px solid black;
                 }
+
+                .crunchie {
+                    bottom: 0;
+                    left: 0;
+                    height: 20px;
+                    width: 20px;
+                    /* border: 2px solid black;
+                    background-color: brown; */
+                    z-index: 1;
+                    cursor: pointer;
+                    transition: all 1s linear;
+                    background: url(./../img/crunchie.png) no-repeat top;
+
+                    &.desappeaing {
+                        animation: blink-text 1s ease-in infinite;
+                    }
+                }
+
+
             }
         }
     }
 
 }
 
+
+
 main {
-    background-color: pink;
+    /* background-color: pink; */
     height: 80%;
     display: flex;
+    position: relative;
+
+    .window {
+        width: 399px;
+        height: 150px;
+        position: absolute;
+        top: 0;
+        left: calc(50% - 100px);
+        background: url("./../img/windows.jpeg") no-repeat 0 0%;
+        background-size: cover;
+        animation: img-sprite 1s steps(2) infinite;
+    }
 
 
     .human-bed {
-        background-color: palevioletred;
-        width: 20%;
+        /* background-color: palevioletred; */
+        width: 200px;
+        margin-right: 7px;
+        margin-top: 100px;
+        height: 300px;
+        background: url(./../img/bed.jpeg) no-repeat 0 0%;
+        background-position-y: bottom;
+        background-size: 200%;
+        animation: img-sprite 1s steps(2) infinite;
+
     }
 
     .battle-ground {
-        background-color: orange;
+        /* background-color: orange; */
+        /* border: 1px solid gray; */
         width: 800px;
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
+        justify-content: flex-end;
         overflow: hidden;
 
         &.ready li {
@@ -84,43 +251,103 @@ main {
         }
 
         & ul {
-            background-color: red;
+            /* background-color: red; */
             height: 20%;
             display: flex;
             position: relative;
 
+            &:nth-child(1) {
+                background: url(./../img/carpettexture.png) repeat-x top;
+            }
 
+            &:nth-child(2) {
+                & li:nth-child(even) {
+                    background: url(./../img/carpettexture.png) repeat-x bottom;
+                }
 
-
-            & li {
-                background-color: #e8e8e8;
-                height: 100px;
-                width: 100px;
-                position: relative;
-                overflow: visible;
-
-                &:nth-child(even) {
-                    background-color: lightgray;
+                & li:nth-child(odd) {
+                    background: url(./../img/carpettexture.png) repeat-x top;
                 }
             }
         }
+
+
+
+
+        & li {
+            /* background-color: #e8e8e8; */
+            /* border-top: 1px solid lightgray; */
+            height: 100%;
+            width: 100px;
+            position: relative;
+            overflow: visible;
+
+            &:nth-child(even) {
+                /* background-color: lightgray; */
+            }
+
+            &:hover {
+                background-color: rgb(243, 243, 243) !important;
+            }
+        }
+    }
+}
+
+.monster-closet {
+    background-color: orangered;
+    width: 50px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 300px;
+    margin-top: 99px;
+    background: url(./../img/closethole.jpeg) no-repeat 0 0%;
+    background-position-y: bottom;
+    background-size: 200%;
+    animation: img-sprite 1s steps(2) infinite;
+
+    &.open {
+
+        .door-top {
+            transform: rotate(223deg) scale(-1.2) translate(27px, 96px);
+        }
+
+        .door-bottom {
+            transform: rotate(134deg) scale(-1.2) translate(21px, -94px);
+        }
+
     }
 
-    .monster-closet {
-        background-color: orangered;
-        width: calc(100% - 800px - 19%);
+    .closet-door {
+        width: 50px;
+        height: 150px;
+    }
+
+    .door-top {
+        background: url(./../img/closetdoortop.png) no-repeat 0 0%;
+        background-position-y: bottom;
+        background-size: 200%;
+        animation: img-sprite 1s steps(2) infinite;
+    }
+
+    .door-bottom {
+        background: url(./../img/closetdoorbottom.png) no-repeat 0 0%;
+        background-position-y: bottom;
+        background-size: 200%;
+        animation: img-sprite 1s steps(2) infinite;
+
     }
 
 }
 
 footer {
-    background-color: lightblue;
+    /* background-color: lightblue; */
     height: 20%;
     display: flex;
     justify-content: space-between;
 
     .budget {
-        background-color: aquamarine;
+        /* background-color: aquamarine; */
         width: 20%;
 
         .start-game-btn {
@@ -131,10 +358,33 @@ footer {
     }
 
     .cat-center {
-        background-color: lightblue;
+        /* background-color: lightblue; */
+        /* border: 1px solid gray; */
         width: 60%;
         display: flex;
         padding: 0 30px;
+        background: url(./../img/bordershor.png) repeat-x top;
+        position: relative;
+        -webkit-box-shadow: -4px -4px 2px -1px #000000;
+        box-shadow: -4px -4px 2px -1px #000000;
+
+        &::after {
+            content: "";
+            width: 10px;
+            height: 100%;
+            position: absolute;
+            right: 0;
+            background: url(./../img/borders.png) repeat-y top;
+        }
+
+        &::before {
+            content: "";
+            width: 10px;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            background: url(./../img/borders.png) repeat-y top;
+        }
 
         .cat-list {
             display: flex;
@@ -157,10 +407,16 @@ footer {
                 }
             }
         }
+
+        .chooseMsg {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
     }
 
     .settings {
-        background-color: aqua;
+        /* background-color: aqua; */
         width: 20%;
         display: flex;
         justify-content: center;

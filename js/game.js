@@ -9,6 +9,7 @@ class Game {
   // code to be added
   constructor(currentLevel) {
     this.currentLevel = currentLevel;
+    this.foodCounter = document.querySelector(".foodcounter");
     this.catSelection = document.querySelector(".cat-list");
     this.battleGround = document.querySelector(".battle-ground");
     this.battleGroundSpaces = document.querySelectorAll(
@@ -35,7 +36,7 @@ class Game {
     this.startBattle(lvl);
     this.availableCats(lvl);
     this.selectPlacement();
-    // this.startFeeder();
+    this.startFeeder();
   }
 
   availableCats(lvl) {
@@ -72,7 +73,8 @@ class Game {
       space.addEventListener("click", (e) => {
         if (
           this.boardReady === true &&
-          !e.target.classList.contains("occupied")
+          !e.target.classList.contains("occupied") &&
+          this.food >= 5
         ) {
           const position = e.target.id;
 
@@ -87,7 +89,8 @@ class Game {
               this.tempCat.img
             )
           );
-
+          this.food -= 5;
+          this.foodCounter.textContent = this.food;
           document.querySelector(".chosen").classList.remove("chosen");
           this.boardReady = false;
           this.battleGround.classList.remove("ready");
@@ -101,13 +104,22 @@ class Game {
     let foodInt = setInterval(() => {
       this.foodCrunchies.push(new Crunchies());
       for (const crunchie of this.foodCrunchies) {
-        crunchie.addEventListener("click", () => {
-          Game.food += 5;
+        crunchie.element.addEventListener("click", () => {
+          this.food += 5;
+          this.foodCounter.textContent = this.food;
           crunchie.element.style.display = "none";
           crunchie.element.remove();
         });
+
+        setTimeout(() => {
+          crunchie.element.classList.add("desappeaing");
+        }, 1000 * 10);
+
+        setTimeout(() => {
+          crunchie.element.remove();
+        }, 1000 * 20);
       }
-    }, 5000);
+    }, 1000 * 10);
   }
 
   startBattle(lvl) {
@@ -185,7 +197,7 @@ class Game {
               catOnboard.health -= monster.strength;
               console.log("catOnboard.health", catOnboard.health);
               if (catOnboard.health <= 0) {
-                // catOnboard.projectiles = null;
+                catOnboard.projectiles = [];
                 catOnboard.element.remove();
                 monster.velocity = monster.speed;
               }

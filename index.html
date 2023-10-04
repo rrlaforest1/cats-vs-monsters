@@ -11,15 +11,40 @@
 
 <body>
     <div class="board">
+        <div class="border-left"></div>
+        <div class="border-right"></div>
+        <div class="border-top"></div>
+        <div class="border-bottom"></div>
         <div class="pre-screen modal-box">
+
             <div class="instructions">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias consectetur assumenda quasi,
-                voluptas dolor laudantium! Maiores obcaecati enim delectus beatae? Necessitatibus cumque non dolorum
-                ullam reprehenderit quam ea pariatur error?
+                <div class="border-left"></div>
+                <div class="border-right"></div>
+                <div class="border-top"></div>
+                <div class="border-bottom"></div>
+                <h3>Choose Your Cats:</h3>
+                <p>Pick different cats with unique abilities to defend your home.</p>
+                <h3>Place Cats:</h3>
+                <p>Strategically place cats on your front yard to stop the approaching monsters.</p>
+                <h3>Collect Resources:</h3>
+                <p>Gather resources (like suns or coins) to plant more cats.</p>
+                <h3>Upgrade Cats:</h3>
+                <p>Use collected resources to make your cats more powerful.</p>
+                <h3>Activate Special Abilities:</h3>
+                <p>Some cats have special abilities. Use them wisely during battles.</p>
+                <h3>Survive Waves:</h3>
+                <p>Defeat all the monsters in each wave to progress.</p>
+                <h3>Win the Game:</h3>
+                <p>Survive all waves to protect your home and win the game.</p>
+                <h3>Game Over:</h3>
+                <p>If monsters reach your home, you lose. Try again!</p>
+
+                <button class="initiate-game-btn">Got it!</button>
             </div>
         </div>
         <main>
             <section class="human-bed"></section>
+            <div class="window"></div>
 
             <section class="battle-ground">
                 <ul class="battle-ground-spaces">
@@ -67,7 +92,10 @@
 
             </section>
 
-            <section class="monster-closet"></section>
+            <section class="monster-closet">
+                <div class="closet-door door-top"></div>
+                <div class="closet-door door-bottom"></div>
+            </section>
 
         </main>
 
@@ -76,15 +104,19 @@
 
             <div class="budget">
                 <button class="start-game-btn">Start game</button>
-                <div class="feeder"></div>
+
+                <div class="feeder">
+                    <div class="foodcounter"><span>5</span></div>
+                </div>
             </div>
 
             <div class="cat-center">
                 <ul class="cat-list">
                 </ul>
+                <p class="chooseMsg">Select your cat!</p>
             </div>
 
-            <div class="budget">
+            <div class="settings">
                 <button class="settings-btn">Settings</button>
             </div>
 

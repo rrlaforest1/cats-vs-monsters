@@ -6,11 +6,18 @@ class Curnchies {
     this.element = document.createElement("div");
     this.element.classList.add("crunchie");
     this.element.style.position = "absolute";
-    // this.element.addEventListener("click", () => {
-    //     Game.food += 5;
-
-    // });
     this.feeder.append(this.element);
+    this.bottom = Math.floor(Math.random() * (100 - 40 + 1) + 20);
+    this.left = Math.floor(Math.random() * (100 - 40 + 1) + 20);
+
+    this.init();
+  }
+
+  init() {
+    setTimeout(() => {
+      this.element.style.bottom = this.bottom + "%";
+      this.element.style.left = this.left + "%";
+    }, 500);
   }
 }
 
