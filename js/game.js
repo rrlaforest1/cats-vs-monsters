@@ -6,7 +6,6 @@ import levels from "./data-levels.js";
 import Crunchies from "./food.js";
 
 class Game {
-  // code to be added
   constructor(currentLevel) {
     this.currentLevel = currentLevel;
     this.foodCounter = document.querySelector(".foodcounter");

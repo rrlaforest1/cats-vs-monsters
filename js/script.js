@@ -39,9 +39,5 @@ startButton.addEventListener("click", function () {
 });
 
 function startGame(gLvl) {
-  //   gameScreen.classList.remove("hidden");
-  //   mainScreen.classList.add("hidden");
-
   game = new Game(gLvl);
-  // game.start();
 }

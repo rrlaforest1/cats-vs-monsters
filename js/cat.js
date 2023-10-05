@@ -1,4 +1,3 @@
-import cats from "./data-cats.js";
 import Projectile from "./projectile.js";
 
 class Cat {
