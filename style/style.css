@@ -743,3 +743,93 @@ footer {
     z-index: 1;
     overflow: visible;
 }
+
+
+
+
+
+
+
+ul#settings-btn {
+    position: absolute;
+    height: 3em;
+    margin: 0;
+    padding: 0 10px;
+    background: white;
+    color: black;
+    border: 3px solid black;
+}
+
+ul#settings-btn>li {
+    float: left;
+    list-style-type: none;
+    position: relative;
+    width: 100%;
+}
+
+label {
+    position: relative;
+    display: block;
+    padding: 0 18px 0 12px;
+    line-height: 3em;
+    cursor: pointer;
+}
+
+label:after {
+    content: "";
+    position: absolute;
+    display: block;
+    top: 46%;
+    right: 2px;
+    width: 0;
+    height: 0;
+    border-top: 0 solid rgba(0, 0, 0, 1);
+    border-bottom: 4px solid rgba(0, 0, 0, 1);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    transition: border-bottom .1s, border-top .1s .1s;
+}
+
+input:checked~label:after {
+    border-top: 4px solid rgba(0, 0, 0, 1);
+    border-bottom: 0 solid rgba(0, 0, 0, 1);
+    transition: border-bottom .1s, border-bottom .1s .1s;
+}
+
+/*hide the inputs*/
+input {
+    display: none
+}
+
+input:checked~ul.submenu {
+    max-height: 300px;
+    transition: max-height 0.5s ease-in;
+}
+
+ul.submenu {
+    max-height: 0;
+    padding: 0;
+    overflow: hidden;
+    list-style-type: none;
+    background: #444;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .3);
+    transition: max-height 0.5s ease-out;
+    position: absolute;
+    min-width: 100%;
+    left: -11px;
+    bottom: 52px;
+}
+
+ul.submenu li a {
+    display: block;
+    padding: 12px;
+    color: #ddd;
+    text-decoration: none;
+    box-shadow: 0 -1px rgba(0, 0, 0, .5) inset;
+    transition: background .3s;
+    white-space: nowrap;
+}
+
+ul.submenu li a:hover {
+    background: rgba(0, 0, 0, .3);
+}

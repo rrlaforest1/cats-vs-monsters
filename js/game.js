@@ -42,25 +42,69 @@ class Game {
     this.monsterSound = new Audio("./sounds/monster.wav");
     this.scream = new Audio("./sounds/man-screams.wav");
     this.impact = new Audio("./sounds/bullet2.wav");
+    this.stopMusic = document.querySelector(".stop-music");
+    this.stopSound = document.querySelector(".stop-sounds");
+
+    this.stopAudios();
 
     this.start(this.currentLevel);
 
     this.lvlButton.addEventListener("click", () => {
-      console.log("click New level: " + this.currentLevel);
       this.mondaBox.classList.add("hidden");
       this.board.classList.add("playing");
       setTimeout(() => {
         this.closetDoors.classList.add("open");
       }, 1000);
 
-      console.log("this.start on lvlbutton lvl : ", this.currentLevel);
       this.gameIsOver = false;
       this.start(this.currentLevel);
     });
   }
 
+  stopAudios() {
+    this.stopMusic.addEventListener("click", (e) => {
+      e.target
+        .closest(".settings")
+        .querySelector("#settingsCheck").checked = false;
+      if (e.target.getAttribute("data-sound") == "true") {
+        this.music.muted = true;
+        e.target.textContent = "Unmute Music";
+        e.target.setAttribute("data-sound", "false");
+      } else {
+        this.music.muted = false;
+        e.target.textContent = "Mute Music";
+        e.target.setAttribute("data-sound", "true");
+      }
+    });
+    this.stopSound.addEventListener("click", (e) => {
+      e.target
+        .closest(".settings")
+        .querySelector("#settingsCheck").checked = false;
+      if (e.target.getAttribute("data-sound") == "true") {
+        e.target.textContent = "Unmute Music";
+        this.meow.muted = true;
+        this.doorSlam.muted = true;
+        this.monsterSound.muted = true;
+        this.scream.muted = true;
+        this.impact.muted = true;
+        this.stopMusic.muted = true;
+        this.stopSound.muted = true;
+        e.target.setAttribute("data-sound", "false");
+      } else {
+        e.target.textContent = "Mute Music";
+        this.meow.muted = false;
+        this.doorSlam.muted = false;
+        this.monsterSound.muted = false;
+        this.scream.muted = false;
+        this.impact.muted = false;
+        this.stopMusic.muted = false;
+        this.stopSound.muted = false;
+        e.target.setAttribute("data-sound", "true");
+      }
+    });
+  }
+
   start(lvl) {
-    console.log("start lvl", lvl);
     this.startBattle(lvl);
     this.availableCats(lvl);
     this.selectPlacement();
@@ -70,7 +114,6 @@ class Game {
   }
 
   availableCats(lvl) {
-    console.log("availableCats");
     for (const cat of this.catsData) {
       if (cat.level <= this.currentLevel) {
         const li = document.createElement("li");
@@ -100,7 +143,6 @@ class Game {
   }
 
   selectPlacement() {
-    console.log("selectPlacement");
     for (const space of this.battleGroundSpaces) {
       space.addEventListener("click", (e) => {
         if (
@@ -168,7 +210,6 @@ class Game {
     const numberOfMonstersForLvl = currentLevelData.quantity;
 
     let monstersFrequency = setInterval(() => {
-      console.log("monster interval");
       for (const monsterType of currentLevelData.monsters) {
         this.monsterCounter++;
 
@@ -202,7 +243,6 @@ class Game {
              * Check if bullets hit the monsters
              */
             if (monster.didCollide(bullet) && monster.health > 0) {
-              console.log("It's a HIT!");
               this.impact.play();
               bullet.element.remove();
               monster.health -= catOnboard.strength;
@@ -215,10 +255,8 @@ class Game {
                 this.monsters = this.monsters.filter(
                   (monster) => monster.health > 0
                 );
-                console.log("this.monsters", this.monsters);
 
                 if (this.monsters.length <= 0) {
-                  console.log("no more monsters");
                   this.levelCompleted = true;
                   /**
                    * If no more levels YOU'VE WON else Start new level
@@ -238,14 +276,10 @@ class Game {
              * Check if Monsters reaches cats
              */
             if (monster.didCollide(catOnboard) && monster.health > 0) {
-              console.log("oh no too late!!");
-
               // stop monster's movement
               monster.velocity = 0;
 
-              console.log("it's hitting the kitty!! T.T");
               catOnboard.health -= monster.strength;
-              console.log("catOnboard.health", catOnboard.health);
               if (catOnboard.health <= 0) {
                 catOnboard.projectiles = [];
                 catOnboard.element.closest("li").classList.remove("occupied");
@@ -268,8 +302,6 @@ class Game {
           boardBounding.left > monsterBounding.left &&
           monsterBounding.left !== 0
         ) {
-          console.log("monsterBounding.left", monsterBounding.left);
-          console.log("nooooooo");
           this.scream.play();
           this.winOrLoose("loose");
         }
@@ -280,7 +312,6 @@ class Game {
   killSwitch() {
     this.music.pause();
     this.gameIsOver = true;
-    console.log("STOP EVERYTHING!!!");
     for (const monster of this.monsters) {
       monster.element.remove();
     }
@@ -289,7 +320,6 @@ class Game {
       clearInterval(catOnboard.bulletCadence);
       catOnboard.element.closest("li").classList.remove("occupied");
       catOnboard.element.remove();
-      console.log("catOnboard", catOnboard);
       for (const bullet of catOnboard.projectiles) {
         bullet.element.remove();
       }
@@ -312,7 +342,6 @@ class Game {
   }
 
   startNewLevel(lvl) {
-    console.log("startNewLeve", lvl);
     this.killSwitch();
     this.currentLevel = lvl + 1;
     this.mondaBox.classList.remove("hidden");
@@ -320,7 +349,6 @@ class Game {
   }
 
   winOrLoose(status) {
-    console.log("winOrLoose");
     this.killSwitch();
     this.mondaBox.classList.remove("hidden");
     this.mondaBox.setAttribute("data-on-lvl", "");

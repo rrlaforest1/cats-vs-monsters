@@ -41,7 +41,6 @@ startButton.addEventListener("click", function () {
   setTimeout(() => {
     closetDoors.classList.add("open");
   }, 1000);
-
   startGame(gameLvl);
 });
 

@@ -155,7 +155,16 @@
             </div>
 
             <div class="settings">
-                <button class="settings-btn">Settings</button>
+                <ul id="settings-btn">
+                    <li>
+                        <input id="settingsCheck" type="checkbox" name="menu" />
+                        <label for="settingsCheck">Settings</label>
+                        <ul class="submenu">
+                            <li class="stop-music"><a data-sound="true" href="#a">Mute Music</a></li>
+                            <li class="stop-sounds"><a data-sound="true" href="#a">Mute Sounds</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
 
         </footer>
