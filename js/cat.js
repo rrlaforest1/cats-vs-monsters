@@ -26,12 +26,10 @@ class Cat {
   }
 
   attack(pos) {
-    console.log("attack");
-
     this.bulletCadence = setInterval(() => {
       this.projectiles.push(new Projectile(pos));
       if (this.health <= 0) {
-        clearInterval(bulletCadence);
+        clearInterval(this.bulletCadence);
       }
     }, 3000);
 
@@ -40,7 +38,7 @@ class Cat {
         bullet.move();
         bullet.updatePosition();
         if (this.health <= 0) {
-          clearInterval(bulletMovement);
+          clearInterval(this.bulletMovement);
         }
         if (bullet.didGoOut()) {
           bullet.element.remove();

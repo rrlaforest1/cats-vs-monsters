@@ -284,9 +284,12 @@ class Game {
                 catOnboard.projectiles = [];
                 catOnboard.element.closest("li").classList.remove("occupied");
                 catOnboard.element.remove();
-                this.catsOnboard = this.catsOnboard.filter(
-                  (catOnboard) => catOnboard.health > 0
-                );
+                clearInterval(catOnboard.bulletMovement);
+                clearInterval(catOnboard.bulletCadence);
+                for (const bullet of catOnboard.projectiles) {
+                  bullet.element.remove();
+                }
+
                 monster.velocity = monster.speed;
               }
 
@@ -318,7 +321,6 @@ class Game {
     for (const catOnboard of this.catsOnBoard) {
       clearInterval(catOnboard.bulletMovement);
       clearInterval(catOnboard.bulletCadence);
-      catOnboard.element.closest("li").classList.remove("occupied");
       catOnboard.element.remove();
       for (const bullet of catOnboard.projectiles) {
         bullet.element.remove();

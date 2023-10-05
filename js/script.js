@@ -35,7 +35,6 @@ initiateButton.addEventListener("click", function (e) {
 });
 
 startButton.addEventListener("click", function () {
-  console.log("click start");
   mondaBox.classList.add("hidden");
   board.classList.add("playing");
   setTimeout(() => {
