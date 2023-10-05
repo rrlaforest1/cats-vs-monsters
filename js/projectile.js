@@ -6,6 +6,7 @@ class Projectile {
     this.element.classList.add("bullet");
     this.element.style.position = "absolute";
     this.position.append(this.element);
+    this.battleGround = document.querySelector(".battle-ground");
   }
 
   move() {
@@ -28,6 +29,15 @@ class Projectile {
       monsBounding.top < bulletBounding.bottom;
 
     return isInX && isInY;
+  }
+
+  didGoOut() {
+    const bulletBounding = this.element.getBoundingClientRect();
+    const boardBounding = this.battleGround.getBoundingClientRect();
+
+    const isInX = boardBounding.right < bulletBounding.right;
+
+    return isInX;
   }
 }
 export default Projectile;

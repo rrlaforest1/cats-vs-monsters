@@ -7,6 +7,34 @@
     src: url('./../fonts/Wellfleet-Regular.ttf') format('truetype');
 }
 
+@-moz-keyframes blink-text {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes blink-text {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
 @keyframes blink-text {
     0% {
         opacity: 0;
@@ -21,6 +49,26 @@
     }
 }
 
+@-webkit-keyframes img-sprite {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: 200%;
+    }
+}
+
+@-moz-keyframes img-sprite {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: 200%;
+    }
+}
+
 @keyframes img-sprite {
     from {
         background-position: 0px;
@@ -28,6 +76,36 @@
 
     to {
         background-position: 200%;
+    }
+}
+
+@-moz-keyframes img-sprite-thriple {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: 150%;
+    }
+}
+
+@-webkit-keyframes img-sprite-thriple {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: 150%;
+    }
+}
+
+@keyframes img-sprite-thriple {
+    from {
+        background-position: 0px;
+    }
+
+    to {
+        background-position: 150%;
     }
 }
 
@@ -43,11 +121,19 @@ li {
 }
 
 body {
-    /* background-color: beige; */
+    background-color: black;
 }
 
 .hidden {
     display: none !important;
+}
+
+.brown {
+    color: brown;
+}
+
+.red {
+    color: darkred;
 }
 
 /*
@@ -60,34 +146,158 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    .instructions {
+    .white-box {
         padding: 30px;
         background-color: white;
         color: black;
         max-width: 600px;
+        min-width: 400px;
+        min-height: 300px;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
 
+        & h3 {
+            font-size: 18px;
+            color: darkred;
+        }
+
+        & p {
+            font-size: 18px;
+            margin: 20px 0;
+        }
+
+
+    }
+
+    .instructions {
         & h3 {
             font-size: 14px;
         }
 
         & p {
-            font-size: 12px;
-            margin-bottom: 15px;
+            font-size: 14px;
+            margin: 0 0 15px;
+        }
+    }
+
+    .modal-btn {
+        border: 3px solid black;
+        background-color: white;
+        color: black;
+        padding: 15px 40px;
+        cursor: pointer;
+    }
+
+    .start-game-btn {
+        background-color: darkred;
+        color: white;
+        text-transform: uppercase;
+    }
+
+    .story {
+        text-align: center;
+    }
+
+    .story2-face {
+        height: 80px;
+        width: 80px;
+        border: 3px solid black;
+        display: inline-block;
+        background: url(./../img/spike.png) no-repeat 0 0%;
+        background-position-y: bottom;
+        background-size: 200%;
+        animation: img-sprite 1s steps(2) infinite;
+
+    }
+
+    .story3-face {
+        height: 80px;
+        width: 80px;
+        border: 3px solid black;
+        display: inline-block;
+        background: url(./../img/catintro.png) no-repeat 0 0%;
+        background-position-y: bottom;
+        background-size: 200%;
+        animation: img-sprite 1s steps(2) infinite;
+    }
+
+    &.on-lvl2 {
+        .ready-msg {
+            display: none;
+            ;
         }
 
-        .initiate-game-btn {
-            border: 3px solid black;
-            background-color: white;
-            color: black;
-            padding: 15px 40px;
-            cursor: pointer;
+        .start-game-btn {
+            display: none;
+        }
+
+        .start-level-btn {
+            display: block !important;
+            background-color: darkred;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .lvl2 {
+            display: block !important;
+
+        }
+    }
+
+    &.on-lvl3 {
+        .ready-msg {
+            display: none;
+        }
+
+        .lvl2 {
+            display: none !important;
+
+        }
+
+
+        .lvl3 {
+            display: block !important;
+        }
+
+        .start-game-btn {
+            display: none;
+        }
+
+        .start-level-btn {
+            display: block !important;
+            background-color: darkred;
+            color: white;
+            text-transform: uppercase;
+        }
+    }
+
+    .winorloose[data-status="win"] {
+        .win-msg {
+            display: block;
+        }
+
+        .loose-msg {
+            display: none !important;
+        }
+    }
+
+    .winorloose[data-status="loose"] {
+        .win-msg {
+            display: none !important;
+        }
+
+        .loose-msg {
+            display: block;
         }
     }
 
@@ -95,40 +305,40 @@ body {
 
 .border-left {
     width: 10px;
-    height: calc(100% + 20px);
+    height: 100%;
     position: absolute;
-    left: -10px;
-    top: -10px;
+    left: 0;
+    top: 0;
     background: url(./../img/borders.png) repeat-y top;
 
 }
 
 .border-right {
     width: 10px;
-    height: calc(100% + 20px);
+    height: 100%;
     position: absolute;
-    right: -10px;
-    top: -10px;
+    right: 0;
+    top: 0;
     background: url(./../img/borders.png) repeat-y top;
 
 }
 
 .border-top {
-    width: calc(100% + 20px);
+    width: 100%;
     height: 10px;
     position: absolute;
-    left: -10px;
-    top: -10px;
+    left: 0;
+    top: 0;
     background: url(./../img/bordershor.png) repeat-x top;
 
 }
 
 .border-bottom {
-    width: calc(100% + 20px);
+    width: 100%;
     height: 10px;
     position: absolute;
-    left: -10px;
-    bottom: -10px;
+    left: 0;
+    bottom: 0;
     background: url(./../img/bordershor.png) repeat-x top;
 
 }
@@ -138,7 +348,8 @@ body {
 */
 
 .board {
-    /* background-color: bisque; */
+    background-color: white;
+    padding: 10px;
     /* border: 1px solid gray; */
     max-width: 1024px;
     height: 500px;
@@ -152,54 +363,66 @@ body {
         display: none;
     }
 
+    /*! PLAYING ANIMATIONS*/
     &.playing {
-        .budget {
-            .start-game-btn {
-                display: none;
+
+        & main {
+            .window {
+                background: url("./../img/windows.jpeg") no-repeat 0 0%;
+                background-size: cover;
+                animation: img-sprite 1s steps(2) infinite;
             }
 
-            .feeder {
-                display: block;
-                width: 100px;
-                height: 100px;
-                background: url(./../img/feeder.png) no-repeat 0 0%;
+
+            .human-bed {
+                background: url(./../img/bed.jpeg) no-repeat 0 0%;
                 background-position-y: bottom;
                 background-size: 200%;
                 animation: img-sprite 1s steps(2) infinite;
 
-                .foodcounter {
-                    position: relative;
-                    right: -120px;
-                    top: 25px;
-                    width: 50px;
-                    height: 50px;
-                    padding: 10px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border: 5px solid black;
-                }
+            }
 
-                .crunchie {
-                    bottom: 0;
-                    left: 0;
-                    height: 20px;
-                    width: 20px;
-                    /* border: 2px solid black;
-                    background-color: brown; */
-                    z-index: 1;
-                    cursor: pointer;
-                    transition: all 1s linear;
-                    background: url(./../img/crunchie.png) no-repeat top;
+        }
 
-                    &.desappeaing {
-                        animation: blink-text 1s ease-in infinite;
-                    }
-                }
+        .monster-closet {
+            background: url(./../img/closethole.jpeg) no-repeat 0 0%;
+            background-position-y: bottom;
+            background-size: 200%;
+            animation: img-sprite 1s steps(2) infinite;
 
+
+            .door-top {
+                background: url(./../img/closetdoortop.png) no-repeat 0 0%;
+                background-position-y: bottom;
+                background-size: 200%;
+                animation: img-sprite 1s steps(2) infinite;
+            }
+
+            .door-bottom {
+                background: url(./../img/closetdoorbottom.png) no-repeat 0 0%;
+                background-position-y: bottom;
+                background-size: 200%;
+                animation: img-sprite 1s steps(2) infinite;
 
             }
+
         }
+
+        & footer {
+
+            .budget {
+
+                .feeder {
+                    background: url(./../img/feeder2.png) no-repeat 0 0%;
+                    background-position-y: bottom;
+                    background-size: 200%;
+                    animation: img-sprite 1s steps(2) infinite;
+                }
+            }
+
+
+        }
+
     }
 
 }
@@ -219,8 +442,6 @@ main {
         top: 0;
         left: calc(50% - 100px);
         background: url("./../img/windows.jpeg") no-repeat 0 0%;
-        background-size: cover;
-        animation: img-sprite 1s steps(2) infinite;
     }
 
 
@@ -231,10 +452,6 @@ main {
         margin-top: 100px;
         height: 300px;
         background: url(./../img/bed.jpeg) no-repeat 0 0%;
-        background-position-y: bottom;
-        background-size: 200%;
-        animation: img-sprite 1s steps(2) infinite;
-
     }
 
     .battle-ground {
@@ -248,13 +465,19 @@ main {
 
         &.ready li {
             cursor: pointer;
+
+            &:not(.occupied):hover {
+                background-color: yellow !important;
+            }
         }
 
         & ul {
-            /* background-color: red; */
+            background-color: white;
             height: 20%;
             display: flex;
+            align-items: flex-end;
             position: relative;
+            overflow: visible;
 
             &:nth-child(1) {
                 background: url(./../img/carpettexture.png) repeat-x top;
@@ -286,9 +509,7 @@ main {
                 /* background-color: lightgray; */
             }
 
-            &:hover {
-                background-color: rgb(243, 243, 243) !important;
-            }
+
         }
     }
 }
@@ -302,18 +523,16 @@ main {
     height: 300px;
     margin-top: 99px;
     background: url(./../img/closethole.jpeg) no-repeat 0 0%;
-    background-position-y: bottom;
-    background-size: 200%;
-    animation: img-sprite 1s steps(2) infinite;
 
     &.open {
 
         .door-top {
-            transform: rotate(223deg) scale(-1.2) translate(27px, 96px);
+            transform: rotate(134deg) scale(-1.2) translate(21px, -94px);
         }
 
         .door-bottom {
-            transform: rotate(134deg) scale(-1.2) translate(21px, -94px);
+
+            transform: rotate(223deg) scale(-1.2) translate(27px, 96px);
         }
 
     }
@@ -321,21 +540,16 @@ main {
     .closet-door {
         width: 50px;
         height: 150px;
+        /* transition: all 0.5s linear; */
     }
 
     .door-top {
         background: url(./../img/closetdoortop.png) no-repeat 0 0%;
-        background-position-y: bottom;
-        background-size: 200%;
-        animation: img-sprite 1s steps(2) infinite;
+
     }
 
     .door-bottom {
         background: url(./../img/closetdoorbottom.png) no-repeat 0 0%;
-        background-position-y: bottom;
-        background-size: 200%;
-        animation: img-sprite 1s steps(2) infinite;
-
     }
 
 }
@@ -347,13 +561,45 @@ footer {
     justify-content: space-between;
 
     .budget {
-        /* background-color: aquamarine; */
         width: 20%;
 
-        .start-game-btn {
-            /* !THIS BUTTON IS TEMPORARY */
-            padding: 10px 20px;
-            cursor: pointer;
+        .feeder {
+            display: block;
+            width: 100px;
+            height: 100px;
+            background: url(./../img/feeder2.png) no-repeat 0 0%;
+
+            .foodcounter {
+                position: relative;
+                right: -120px;
+                top: 25px;
+                width: 50px;
+                height: 50px;
+                padding: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 5px solid black;
+            }
+
+            .crunchie {
+                bottom: 30px;
+                left: 50px;
+                height: 40px;
+                width: 20px;
+                /* border: 2px solid black;
+                background-color: brown; */
+                z-index: 1;
+                cursor: pointer;
+                transition: all 1s linear;
+                background: url(./../img/crunchie.png) no-repeat top;
+
+                &.desappeaing {
+                    animation: blink-text 1s ease-in infinite;
+                }
+            }
+
+
         }
     }
 
@@ -388,22 +634,26 @@ footer {
 
         .cat-list {
             display: flex;
-            align-items: center;
+            align-items: flex-end;
+            padding-bottom: 5px;
 
             .availableCat {
                 background-color: #fff;
-                width: 80px;
-                height: 80px;
-                background-size: 4000%;
-                background-position: -10px 93px;
+                width: 75px;
+                height: 75px;
                 cursor: pointer;
+                background-size: cover;
+                position: relative;
+                border: 3px solid black;
 
                 &:hover {
-                    border: 2px solid greenyellow;
+                    scale: 1.1;
+                    background-color: yellow;
                 }
 
                 &.chosen {
-                    border: 2px solid red;
+                    scale: 1.1;
+                    background-color: yellow;
                 }
             }
         }
@@ -421,9 +671,12 @@ footer {
         display: flex;
         justify-content: center;
         align-items: center;
+        z-index: 1;
 
         .settings-btn {
-            padding: 10px 20px;
+            background-color: white;
+            color: black;
+            padding: 15px 40px;
             cursor: pointer;
         }
     }
@@ -436,27 +689,52 @@ footer {
 .cat {
     width: 100%;
     height: 100%;
-    background-size: 4000%;
-    background-position: -13px 113px;
+    background: url(./../img/cat1.png) no-repeat 0 0%;
+    background-position-y: bottom;
+    background-size: 300%;
+    animation: img-sprite-thriple 1.5s steps(3) infinite;
 }
 
 .bullet {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: red;
+    background: url(./../img/furrball.png) no-repeat 0 0%;
     left: 70px;
     top: 20%;
     z-index: 1;
+    -webkit-animation: spin 2s linear infinite;
+    -moz-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@-moz-keyframes spin {
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
 
 .monster {
     width: 100%;
-    height: 100%;
+    height: 90px !important;
+    vertical-align: top;
     background-color: transparent !important;
-    right: -100px;
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
-    background-size: 2500%;
-    background-position: 819px 197px;
+    background-position-y: bottom;
+    background-size: 300%;
+    animation: img-sprite-thriple 1.5s steps(3) infinite;
+    z-index: 1;
+    overflow: visible;
 }

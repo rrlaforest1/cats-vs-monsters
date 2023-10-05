@@ -34,7 +34,12 @@ class Monster {
     const monsBounding = this.element.getBoundingClientRect();
 
     const isInX = monsBounding.left < bulletorcatBounding.right;
-    return isInX;
+    const isInY =
+      monsBounding.bottom - 20 > bulletorcatBounding.top &&
+      monsBounding.top < bulletorcatBounding.bottom - 20;
+    // return isInX;
+
+    return isInX && isInY;
   }
 }
 export default Monster;

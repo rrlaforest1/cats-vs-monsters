@@ -4,9 +4,9 @@ const monster = {
     name: "ghoul",
     health: 10,
     strength: 1,
-    speed: 1.5,
+    speed: 5,
     type: "walker",
-    img: "url('./img/Attack.png')",
+    img: "url('./img/monster1.png')",
   },
 };
 

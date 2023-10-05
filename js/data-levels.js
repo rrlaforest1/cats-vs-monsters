@@ -9,18 +9,20 @@ const levels = {
     ],
   },
   2: {
+    quantity: 2,
     monsters: [
       {
         type: "walker",
-        typeQuantity: 5,
+        typeQuantity: 2,
       },
     ],
   },
   3: {
+    quantity: 3,
     monsters: [
       {
         type: "walker",
-        typeQuantity: 7,
+        typeQuantity: 3,
       },
     ],
   },

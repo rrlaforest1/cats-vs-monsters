@@ -3,9 +3,10 @@ const cats = [
     level: 1,
     name: "fullball",
     health: 10,
-    strength: 1.5,
+    strength: 5,
     type: "projectiles",
-    img: "url('./img/blue_3.png')",
+    img: "url('./img/cat1.png')",
+    imgcloseup: "url('./img/cat1closeup.png')",
   },
 ];
 

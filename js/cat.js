@@ -2,7 +2,7 @@ import cats from "./data-cats.js";
 import Projectile from "./projectile.js";
 
 class Cat {
-  constructor(position, level, name, health, strength, type, img) {
+  constructor(position, level, name, health, strength, type, img, imgcloseup) {
     this.position = document.getElementById(position);
     this.level = level;
     this.name = name;
@@ -10,7 +10,10 @@ class Cat {
     this.strength = strength;
     this.type = type;
     this.img = img;
+    this.imgcloseup = imgcloseup;
     this.projectiles = [];
+    this.bulletCadence = null;
+    this.bulletMovement = null;
 
     this.init(this.position);
   }
@@ -26,19 +29,22 @@ class Cat {
   attack(pos) {
     console.log("attack");
 
-    let bulletCadence = setInterval(() => {
+    this.bulletCadence = setInterval(() => {
       this.projectiles.push(new Projectile(pos));
       if (this.health <= 0) {
         clearInterval(bulletCadence);
       }
     }, 3000);
 
-    let bulletMovement = setInterval(() => {
+    this.bulletMovement = setInterval(() => {
       for (const bullet of this.projectiles) {
         bullet.move();
         bullet.updatePosition();
         if (this.health <= 0) {
           clearInterval(bulletMovement);
+        }
+        if (bullet.didGoOut()) {
+          bullet.element.remove();
         }
       }
     }, 30);

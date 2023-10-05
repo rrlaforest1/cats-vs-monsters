@@ -11,7 +11,12 @@ class Game {
     this.currentLevel = currentLevel;
     this.foodCounter = document.querySelector(".foodcounter");
     this.catSelection = document.querySelector(".cat-list");
+    this.board = document.querySelector(".board");
     this.battleGround = document.querySelector(".battle-ground");
+    this.lvlButton = document.querySelector(".start-level-btn");
+    this.tryAgain = document.querySelector(".tryagain-btn");
+    this.mondaBox = document.querySelector(".modal-box");
+    this.closetDoors = document.querySelector(".monster-closet");
     this.battleGroundSpaces = document.querySelectorAll(
       ".battle-ground-spaces li"
     );
@@ -28,11 +33,25 @@ class Game {
     this.gameCompleted = false;
     this.foodCrunchies = [];
     this.food = 5;
+    this.feeder = null;
+    this.monsterMovement = null;
 
-    this.start(currentLevel);
+    this.start(this.currentLevel);
+
+    this.lvlButton.addEventListener("click", () => {
+      console.log("click New level: " + this.currentLevel);
+      this.mondaBox.classList.add("hidden");
+      this.board.classList.add("playing");
+      this.closetDoors.classList.add("open");
+
+      console.log("this.start on lvlbutton lvl : ", this.currentLevel);
+      this.gameIsOver = false;
+      this.start(this.currentLevel);
+    });
   }
 
   start(lvl) {
+    console.log("start lvl", lvl);
     this.startBattle(lvl);
     this.availableCats(lvl);
     this.selectPlacement();
@@ -40,11 +59,12 @@ class Game {
   }
 
   availableCats(lvl) {
+    console.log("availableCats");
     for (const cat of this.catsData) {
-      if (cat.level === this.currentLevel) {
+      if (cat.level <= this.currentLevel) {
         const li = document.createElement("li");
         li.classList.add("availableCat");
-        li.style.backgroundImage = cat.img;
+        li.style.backgroundImage = cat.imgcloseup;
 
         li.addEventListener("click", (e) => {
           if (e.target.classList.contains("chosen")) {
@@ -69,6 +89,7 @@ class Game {
   }
 
   selectPlacement() {
+    console.log("selectPlacement");
     for (const space of this.battleGroundSpaces) {
       space.addEventListener("click", (e) => {
         if (
@@ -86,10 +107,13 @@ class Game {
               this.tempCat.health,
               this.tempCat.strength,
               this.tempCat.type,
-              this.tempCat.img
+              this.tempCat.img,
+              this.tempCat.imgcloseup
             )
           );
+
           this.food -= 5;
+          e.target.classList.add("occupied");
           this.foodCounter.textContent = this.food;
           document.querySelector(".chosen").classList.remove("chosen");
           this.boardReady = false;
@@ -101,23 +125,25 @@ class Game {
   }
 
   startFeeder() {
-    let foodInt = setInterval(() => {
-      this.foodCrunchies.push(new Crunchies());
-      for (const crunchie of this.foodCrunchies) {
-        crunchie.element.addEventListener("click", () => {
-          this.food += 5;
-          this.foodCounter.textContent = this.food;
-          crunchie.element.style.display = "none";
-          crunchie.element.remove();
-        });
+    this.feeder = setInterval(() => {
+      if (!this.gameIsOver) {
+        this.foodCrunchies.push(new Crunchies());
+        for (const crunchie of this.foodCrunchies) {
+          crunchie.element.addEventListener("click", () => {
+            this.food += 5;
+            this.foodCounter.textContent = this.food;
+            crunchie.element.style.display = "none";
+            crunchie.element.remove();
+          });
 
-        setTimeout(() => {
-          crunchie.element.classList.add("desappeaing");
-        }, 1000 * 10);
+          setTimeout(() => {
+            crunchie.element.classList.add("desappeaing");
+          }, 1000 * 10);
 
-        setTimeout(() => {
-          crunchie.element.remove();
-        }, 1000 * 20);
+          setTimeout(() => {
+            crunchie.element.remove();
+          }, 1000 * 20);
+        }
       }
     }, 1000 * 10);
   }
@@ -130,10 +156,11 @@ class Game {
     const numberOfMonstersForLvl = currentLevelData.quantity;
 
     let monstersFrequency = setInterval(() => {
+      console.log("monster interval");
       for (const monsterType of currentLevelData.monsters) {
         this.monsterCounter++;
 
-        if (this.monsterCounter <= numberOfMonstersForLvl) {
+        if (this.monsterCounter <= numberOfMonstersForLvl && !this.gameIsOver) {
           this.monsters.push(
             new Monster(
               monsters[monsterType.type].level,
@@ -149,7 +176,7 @@ class Game {
           clearInterval(monstersFrequency);
         }
       }
-    }, 5000);
+    }, 1000 * 7);
 
     let monsterMovement = setInterval(() => {
       for (const monster of this.monsters) {
@@ -170,16 +197,25 @@ class Game {
                */
               if (monster.health <= 0) {
                 monster.element.remove();
+                // this.monsters.remove(monster);
+                this.monsters = this.monsters.filter(
+                  (monster) => monster.health > 0
+                );
+                console.log("this.monsters", this.monsters);
+
                 if (this.monsters.length <= 0) {
+                  console.log("no more monsters");
                   this.levelCompleted = true;
                   /**
                    * If no more levels YOU'VE WON else Start new level
                    */
-                  if (!this.levelsData[lvl + 1]) {
+                  if (!this.levelsData[this.currentLevel + 1]) {
                     this.gameCompleted = true;
-                    winAnnouncement();
+                    clearInterval(monsterMovement);
+                    this.winOrLoose("win");
                   } else {
-                    startNewLevel(lvl + 1);
+                    clearInterval(monsterMovement);
+                    this.startNewLevel(this.currentLevel);
                   }
                 }
               }
@@ -198,7 +234,11 @@ class Game {
               console.log("catOnboard.health", catOnboard.health);
               if (catOnboard.health <= 0) {
                 catOnboard.projectiles = [];
+                catOnboard.element.closest("li").classList.remove("occupied");
                 catOnboard.element.remove();
+                this.catsOnboard = this.catsOnboard.filter(
+                  (catOnboard) => catOnboard.health > 0
+                );
                 monster.velocity = monster.speed;
               }
 
@@ -206,13 +246,80 @@ class Game {
             }
           }
         }
+
+        const monsterBounding = monster.element.getBoundingClientRect();
+        const boardBounding = this.battleGround.getBoundingClientRect();
+
+        if (
+          boardBounding.left > monsterBounding.left &&
+          monsterBounding.left !== 0
+        ) {
+          console.log("monsterBounding.left", monsterBounding.left);
+          console.log("nooooooo");
+          this.winOrLoose("loose");
+        }
       }
     }, 100);
   }
 
-  startNewLevel(lvl) {}
-  winAnnouncement() {}
-  gameOver() {}
+  killSwitch() {
+    this.gameIsOver = true;
+    console.log("STOP EVERYTHING!!!");
+    for (const monster of this.monsters) {
+      monster.element.remove();
+    }
+    for (const catOnboard of this.catsOnBoard) {
+      clearInterval(catOnboard.bulletMovement);
+      clearInterval(catOnboard.bulletCadence);
+      catOnboard.element.closest("li").classList.remove("occupied");
+      catOnboard.element.remove();
+      console.log("catOnboard", catOnboard);
+      for (const bullet of catOnboard.projectiles) {
+        bullet.element.remove();
+      }
+    }
+    for (const crunchie of this.foodCrunchies) {
+      crunchie.element.remove();
+    }
+    for (const catChoice of this.catSelection.querySelectorAll("li")) {
+      catChoice.remove();
+    }
+
+    this.catSelection;
+    clearInterval(this.feeder);
+    this.monsters = [];
+    this.catsOnBoard = [];
+    this.food = 5;
+    this.foodCounter.textContent = 5;
+    this.monsterCounter = 0;
+    this.board.classList.remove("playing");
+  }
+
+  startNewLevel(lvl) {
+    console.log("startNewLeve", lvl);
+    this.killSwitch();
+    this.currentLevel = lvl + 1;
+    this.mondaBox.classList.remove("hidden");
+    this.mondaBox.classList.add("on-lvl" + this.currentLevel);
+  }
+
+  winOrLoose(status) {
+    console.log("winOrLoose");
+    this.killSwitch();
+    this.mondaBox.classList.remove("hidden");
+    this.mondaBox.classList.remove("on-lvl" + this.currentLevel);
+    this.mondaBox.querySelector(".ready").classList.add("hidden");
+    this.mondaBox.querySelector(".winorloose").classList.remove("hidden");
+    this.mondaBox
+      .querySelector(".winorloose")
+      .setAttribute("data-status", status);
+
+    this.currentLevel = 1;
+    this.tryAgain.addEventListener("click", () => {
+      document.querySelector(".instructions").classList.remove("hidden");
+      this.mondaBox.querySelector(".winorloose").classList.add("hidden");
+    });
+  }
 }
 
 export default Game;
