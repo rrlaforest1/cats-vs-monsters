@@ -13,6 +13,7 @@ class Game {
     this.board = document.querySelector(".board");
     this.battleGround = document.querySelector(".battle-ground");
     this.lvlButton = document.querySelector(".start-level-btn");
+    this.restartButton = document.querySelector(".restart-game-btn");
     this.tryAgain = document.querySelector(".tryagain-btn");
     this.mondaBox = document.querySelector(".modal-box");
     this.closetDoors = document.querySelector(".monster-closet");
@@ -34,6 +35,7 @@ class Game {
     this.food = 5;
     this.feeder = null;
     this.monsterMovement = null;
+    this.monstersFrequency = null;
     this.music = new Audio("./sounds/spooky-music.mp3");
     this.music.loop = true;
     this.music.volume = 0.4;
@@ -54,7 +56,18 @@ class Game {
       this.board.classList.add("playing");
       setTimeout(() => {
         this.closetDoors.classList.add("open");
-      }, 1000);
+      }, 800);
+
+      this.gameIsOver = false;
+      this.start(this.currentLevel);
+    });
+
+    this.restartButton.addEventListener("click", () => {
+      this.mondaBox.classList.add("hidden");
+      this.board.classList.add("playing");
+      setTimeout(() => {
+        this.closetDoors.classList.add("open");
+      }, 800);
 
       this.gameIsOver = false;
       this.start(this.currentLevel);
@@ -209,7 +222,7 @@ class Game {
     const currentLevelData = this.levelsData[lvl];
     const numberOfMonstersForLvl = currentLevelData.quantity;
 
-    let monstersFrequency = setInterval(() => {
+    this.monstersFrequency = setInterval(() => {
       for (const monsterType of currentLevelData.monsters) {
         this.monsterCounter++;
 
@@ -227,12 +240,12 @@ class Game {
           );
           this.monsterSound.play();
         } else {
-          clearInterval(monstersFrequency);
+          clearInterval(this.monstersFrequency);
         }
       }
     }, 1000 * 7);
 
-    let monsterMovement = setInterval(() => {
+    this.monsterMovement = setInterval(() => {
       for (const monster of this.monsters) {
         monster.move();
         monster.updatePosition();
@@ -263,10 +276,10 @@ class Game {
                    */
                   if (!this.levelsData[this.currentLevel + 1]) {
                     this.gameCompleted = true;
-                    clearInterval(monsterMovement);
+                    // clearInterval(monsterMovement);
                     this.winOrLoose("win");
                   } else {
-                    clearInterval(monsterMovement);
+                    // clearInterval(monsterMovement);
                     this.startNewLevel(this.currentLevel);
                   }
                 }
@@ -315,6 +328,7 @@ class Game {
   killSwitch() {
     this.music.pause();
     this.gameIsOver = true;
+
     for (const monster of this.monsters) {
       monster.element.remove();
     }
@@ -333,7 +347,16 @@ class Game {
       catChoice.remove();
     }
 
+    for (const tile of this.battleGround.querySelectorAll("li")) {
+      if (tile.classList.contains("occupied")) {
+        tile.classList.remove("occupied");
+      }
+    }
+
+    this.closetDoors.classList.remove("open");
     this.catSelection;
+    clearInterval(this.monsterMovement);
+    clearInterval(this.monstersFrequency);
     clearInterval(this.feeder);
     this.monsters = [];
     this.catsOnBoard = [];

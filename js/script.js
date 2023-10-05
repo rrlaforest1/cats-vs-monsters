@@ -7,6 +7,7 @@ const story1Button = document.querySelector(".story1-next-btn");
 const story2Button = document.querySelector(".story2-next-btn");
 const story3Button = document.querySelector(".story3-next-btn");
 const startButton = document.querySelector(".start-game-btn");
+const restartButton = document.querySelector(".restart-game-btn");
 const closetDoors = document.querySelector(".monster-closet");
 
 const gameLvl = 1;
@@ -34,12 +35,14 @@ initiateButton.addEventListener("click", function (e) {
   document.querySelector(".ready").classList.remove("hidden");
 });
 
-startButton.addEventListener("click", function () {
+startButton.addEventListener("click", function (e) {
   mondaBox.classList.add("hidden");
+  e.target.classList.add("hidden");
+  restartButton.classList.remove("hidden");
   board.classList.add("playing");
   setTimeout(() => {
     closetDoors.classList.add("open");
-  }, 1000);
+  }, 800);
   startGame(gameLvl);
 });
 

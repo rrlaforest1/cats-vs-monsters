@@ -224,7 +224,8 @@ body {
         cursor: pointer;
     }
 
-    .start-game-btn {
+    .start-game-btn,
+    .restart-game-btn {
         background-color: darkred;
         color: white;
         text-transform: uppercase;
@@ -262,7 +263,8 @@ body {
             display: none;
         }
 
-        .start-game-btn {
+        .start-game-btn,
+        .restart-game-btn {
             display: none;
         }
 
@@ -294,7 +296,8 @@ body {
             display: block !important;
         }
 
-        .start-game-btn {
+        .start-game-btn,
+        .restart-game-btn {
             display: none;
         }
 
