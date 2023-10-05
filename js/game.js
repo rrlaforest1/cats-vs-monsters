@@ -34,6 +34,14 @@ class Game {
     this.food = 5;
     this.feeder = null;
     this.monsterMovement = null;
+    this.music = new Audio("./sounds/spooky-music.mp3");
+    this.music.loop = true;
+    this.music.volume = 0.4;
+    this.meow = new Audio("./sounds/cat-meow2.ogg");
+    this.doorSlam = new Audio("./sounds/door.wav");
+    this.monsterSound = new Audio("./sounds/monster.wav");
+    this.scream = new Audio("./sounds/man-screams.wav");
+    this.impact = new Audio("./sounds/bullet2.wav");
 
     this.start(this.currentLevel);
 
@@ -41,7 +49,9 @@ class Game {
       console.log("click New level: " + this.currentLevel);
       this.mondaBox.classList.add("hidden");
       this.board.classList.add("playing");
-      this.closetDoors.classList.add("open");
+      setTimeout(() => {
+        this.closetDoors.classList.add("open");
+      }, 1000);
 
       console.log("this.start on lvlbutton lvl : ", this.currentLevel);
       this.gameIsOver = false;
@@ -55,6 +65,8 @@ class Game {
     this.availableCats(lvl);
     this.selectPlacement();
     this.startFeeder();
+    this.doorSlam.play();
+    this.music.play();
   }
 
   availableCats(lvl) {
@@ -118,6 +130,7 @@ class Game {
           this.boardReady = false;
           this.battleGround.classList.remove("ready");
           this.tempCat = null;
+          this.meow.play();
         }
       });
     }
@@ -171,6 +184,7 @@ class Game {
               monsters[monsterType.type].img
             )
           );
+          this.monsterSound.play();
         } else {
           clearInterval(monstersFrequency);
         }
@@ -189,6 +203,7 @@ class Game {
              */
             if (monster.didCollide(bullet) && monster.health > 0) {
               console.log("It's a HIT!");
+              this.impact.play();
               bullet.element.remove();
               monster.health -= catOnboard.strength;
               /**
@@ -255,6 +270,7 @@ class Game {
         ) {
           console.log("monsterBounding.left", monsterBounding.left);
           console.log("nooooooo");
+          this.scream.play();
           this.winOrLoose("loose");
         }
       }
@@ -262,6 +278,7 @@ class Game {
   }
 
   killSwitch() {
+    this.music.pause();
     this.gameIsOver = true;
     console.log("STOP EVERYTHING!!!");
     for (const monster of this.monsters) {
@@ -299,14 +316,14 @@ class Game {
     this.killSwitch();
     this.currentLevel = lvl + 1;
     this.mondaBox.classList.remove("hidden");
-    this.mondaBox.classList.add("on-lvl" + this.currentLevel);
+    this.mondaBox.setAttribute("data-on-lvl", this.currentLevel);
   }
 
   winOrLoose(status) {
     console.log("winOrLoose");
     this.killSwitch();
     this.mondaBox.classList.remove("hidden");
-    this.mondaBox.classList.remove("on-lvl" + this.currentLevel);
+    this.mondaBox.setAttribute("data-on-lvl", "");
     this.mondaBox.querySelector(".ready").classList.add("hidden");
     this.mondaBox.querySelector(".winorloose").classList.remove("hidden");
     this.mondaBox

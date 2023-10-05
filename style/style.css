@@ -140,6 +140,32 @@ body {
     MODAL BOXES STYLE
 */
 
+.landing-page {
+
+    background-color: red;
+    padding: 10px;
+    max-width: 1024px;
+    height: 500px;
+    margin: 100px auto 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-image: url(./../img/landingpage.jpg);
+    display: flex;
+    align-content: center;
+    justify-content: flex-end;
+    align-items: center;
+
+    .landing-btn {
+        border: 3px solid black;
+        background-color: white;
+        color: black;
+        padding: 15px 40px;
+        cursor: pointer;
+        margin-bottom: 100px;
+    }
+}
+
 .modal-box {
     position: fixed;
     top: 0;
@@ -231,10 +257,9 @@ body {
         animation: img-sprite 1s steps(2) infinite;
     }
 
-    &.on-lvl2 {
+    &[data-on-lvl="2"] {
         .ready-msg {
             display: none;
-            ;
         }
 
         .start-game-btn {
@@ -254,7 +279,7 @@ body {
         }
     }
 
-    &.on-lvl3 {
+    &[data-on-lvl="3"] {
         .ready-msg {
             display: none;
         }
