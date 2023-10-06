@@ -1,5 +1,9 @@
 class Projectile {
   constructor(position) {
+    /**
+     * Variables
+     * Create the bullet and placeit at the possition passed as a parameter which is the same cat's position
+     */
     this.position = position;
     this.left = 70;
     this.element = document.createElement("div");
@@ -9,28 +13,23 @@ class Projectile {
     this.battleGround = document.querySelector(".battle-ground");
   }
 
+  /**
+   * Move the the bullet at the same speed allways from the left to the right
+   */
   move() {
     this.left += 5;
   }
 
+  /**
+   * Update the left position of the bullet for the movement of the html element
+   */
   updatePosition() {
     this.element.style.left = this.left + "px";
   }
 
-  didCollide(monster) {
-    const bulletBounding = this.element.getBoundingClientRect();
-    const monsBounding = monster.element.getBoundingClientRect();
-
-    const isInX =
-      monsBounding.right > bulletBounding.left &&
-      monsBounding.left < bulletBounding.right;
-    const isInY =
-      monsBounding.bottom > bulletBounding.top &&
-      monsBounding.top < bulletBounding.bottom;
-
-    return isInX && isInY;
-  }
-
+  /**
+   * Che if the bullet exit the game board
+   */
   didGoOut() {
     const bulletBounding = this.element.getBoundingClientRect();
     const boardBounding = this.battleGround.getBoundingClientRect();

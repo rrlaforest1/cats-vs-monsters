@@ -1,5 +1,8 @@
 class Monster {
   constructor(level, name, health, strength, speed, type, img) {
+    /**
+     * Variables
+     */
     this.level = level;
     this.name = name;
     this.health = health;
@@ -21,14 +24,23 @@ class Monster {
     this.dead = false;
   }
 
+  /**
+   * Move the monster with the velocity from the data-monster file
+   */
   move() {
     this.right += this.velocity;
   }
 
+  /**
+   * Update the right position of the monster for the movement of the html element
+   */
   updatePosition() {
     this.element.style.right = this.right + "px";
   }
 
+  /**
+   * Check for collitions to the monster can be either a bullet or a cat if the monster reaches one
+   */
   didCollide(bulletorcat) {
     const bulletorcatBounding = bulletorcat.element.getBoundingClientRect();
     const monsBounding = this.element.getBoundingClientRect();

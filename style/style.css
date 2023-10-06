@@ -331,6 +331,10 @@ body {
 
 }
 
+/*
+    BOXES BORDERS
+*/
+
 .border-left {
     width: 10px;
     height: 100%;
@@ -391,7 +395,7 @@ body {
     }
 
     /*
-    ANIMATIONS STYLE
+    ANIMATIONS
     */
 
     &.playing {
@@ -457,7 +461,9 @@ body {
 
 }
 
-
+/*
+    SPECIFIC STYLE FOR ALL COMPONENTS AND BACKGROUDNS
+*/
 
 main {
     height: 80%;
@@ -687,6 +693,7 @@ footer {
             padding: 15px 40px;
             cursor: pointer;
         }
+
     }
 }
 

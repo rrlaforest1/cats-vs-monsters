@@ -1,4 +1,7 @@
 import Game from "./game.js";
+/**
+ * Variables
+ */
 const board = document.querySelector(".board");
 const initiateButton = document.querySelector(".initiate-game-btn");
 const mondaBox = document.querySelector(".modal-box");
@@ -13,6 +16,9 @@ const closetDoors = document.querySelector(".monster-closet");
 const gameLvl = 1;
 let game = null;
 
+/**
+ * Events Listeners
+ */
 landingButton.addEventListener("click", function (e) {
   e.target.closest(".landing-page").classList.add("hidden");
   document.querySelector(".board").classList.remove("hidden");
@@ -45,6 +51,11 @@ startButton.addEventListener("click", function (e) {
   }, 800);
   startGame(gameLvl);
 });
+
+/**
+ * Start game class with level 1
+ * @param {number} gLvl
+ */
 
 function startGame(gLvl) {
   game = new Game(gLvl);

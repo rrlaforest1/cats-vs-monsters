@@ -7,6 +7,9 @@ import Crunchies from "./food.js";
 
 class Game {
   constructor(currentLevel) {
+    /**
+     * Variables html elements
+     */
     this.currentLevel = currentLevel;
     this.foodCounter = document.querySelector(".foodcounter");
     this.catSelection = document.querySelector(".cat-list");
@@ -20,6 +23,9 @@ class Game {
     this.battleGroundSpaces = document.querySelectorAll(
       ".battle-ground-spaces li"
     );
+    /**
+     * Variables for game updates states
+     */
     this.catsData = cats;
     this.levelsData = levels;
     this.monstersData = monsters;
@@ -36,6 +42,10 @@ class Game {
     this.feeder = null;
     this.monsterMovement = null;
     this.monstersFrequency = null;
+
+    /**
+     * Variables sounds and music
+     */
     this.music = new Audio("./sounds/spooky-music.mp3");
     this.music.loop = true;
     this.music.volume = 0.4;
@@ -51,6 +61,9 @@ class Game {
 
     this.start(this.currentLevel);
 
+    /**
+     * New level button
+     */
     this.lvlButton.addEventListener("click", () => {
       this.mondaBox.classList.add("hidden");
       this.board.classList.add("playing");
@@ -62,6 +75,9 @@ class Game {
       this.start(this.currentLevel);
     });
 
+    /**
+     * Restart game button for after loosing or winning
+     */
     this.restartButton.addEventListener("click", () => {
       this.mondaBox.classList.add("hidden");
       this.board.classList.add("playing");
@@ -74,6 +90,9 @@ class Game {
     });
   }
 
+  /**
+   * Manage the audio settings for the game
+   */
   stopAudios() {
     this.stopMusic.addEventListener("click", (e) => {
       e.target
@@ -117,6 +136,10 @@ class Game {
     });
   }
 
+  /**
+   * Start game with the level
+   * @param {number} lvl
+   */
   start(lvl) {
     this.startBattle(lvl);
     this.availableCats(lvl);
@@ -126,6 +149,10 @@ class Game {
     this.music.play();
   }
 
+  /**
+   * Add cats available for the level to the bottom board and add click event listener
+   * @param {number} lvl
+   */
   availableCats(lvl) {
     for (const cat of this.catsData) {
       if (cat.level <= this.currentLevel) {
@@ -154,6 +181,11 @@ class Game {
       }
     }
   }
+
+  /**
+   * Add click event for the the empty tiles on the boards grid so only after a cat is selected by
+   * adding the cat to a place the class cat is created with a position
+   */
 
   selectPlacement() {
     for (const space of this.battleGroundSpaces) {
@@ -191,6 +223,10 @@ class Game {
     }
   }
 
+  /**
+   * Initiate interval for the feeder to create food items and make them desapear if not used after a while
+   */
+
   startFeeder() {
     this.feeder = setInterval(() => {
       if (!this.gameIsOver) {
@@ -215,6 +251,10 @@ class Game {
     }, 1000 * 10);
   }
 
+  /**
+   * Most of the interactions and collisions will happend in this method. The management of the monster
+   * @param {number} lvl
+   */
   startBattle(lvl) {
     /**
      * BATTLE SYSTEM
@@ -222,6 +262,7 @@ class Game {
     const currentLevelData = this.levelsData[lvl];
     const numberOfMonstersForLvl = currentLevelData.quantity;
 
+    //set the frequency with the interval of the creation of the monster with the limit of the quantity given at the data level
     this.monstersFrequency = setInterval(() => {
       for (const monsterType of currentLevelData.monsters) {
         this.monsterCounter++;
@@ -245,6 +286,7 @@ class Game {
       }
     }, 1000 * 7);
 
+    // set the interval for the mosnters' movement to advance on the board
     this.monsterMovement = setInterval(() => {
       for (const monster of this.monsters) {
         monster.move();
@@ -314,6 +356,9 @@ class Game {
         const monsterBounding = monster.element.getBoundingClientRect();
         const boardBounding = this.battleGround.getBoundingClientRect();
 
+        /**
+         * If the monsters have arrived to the left, to the bet then you loose the game
+         */
         if (
           boardBounding.left > monsterBounding.left &&
           monsterBounding.left !== 0
@@ -325,6 +370,10 @@ class Game {
     }, 100);
   }
 
+  /**
+   * Stop everything that needs to be stoped and reset values to initial setting
+   * to either start a new level o a new game
+   */
   killSwitch() {
     this.music.pause();
     this.gameIsOver = true;
@@ -366,6 +415,10 @@ class Game {
     this.board.classList.remove("playing");
   }
 
+  /**
+   * Start a new level passing a level + 1
+   * @param {number} lvl
+   */
   startNewLevel(lvl) {
     this.killSwitch();
     this.currentLevel = lvl + 1;
@@ -373,6 +426,10 @@ class Game {
     this.mondaBox.setAttribute("data-on-lvl", this.currentLevel);
   }
 
+  /**
+   * Its the same method to reset everything to start a new game wheather the player wins or looses
+   * @param {string} status
+   */
   winOrLoose(status) {
     this.killSwitch();
     this.mondaBox.classList.remove("hidden");

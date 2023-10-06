@@ -2,6 +2,9 @@ import Game from "./game.js";
 
 class Curnchies {
   constructor() {
+    /**
+     * Variables
+     */
     this.feeder = document.querySelector(".feeder");
     this.element = document.createElement("div");
     this.element.classList.add("crunchie");
@@ -13,6 +16,9 @@ class Curnchies {
     this.init();
   }
 
+  /**
+   * Create a single food item and send it flying to a random position in the game board
+   */
   init() {
     setTimeout(() => {
       this.element.style.bottom = this.bottom + "%";
